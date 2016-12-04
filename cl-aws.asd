@@ -5,7 +5,9 @@
   :author "Your Name <your.name@example.com>"
   :license "Specify license here"
   :depends-on (#:drakma
-               #:cl-json)
+               #:cl-json
+               #:py-configparser
+               #:aws-sign4)
   :serial t
   :components ((:file "package")
                (:file "cl-aws")))

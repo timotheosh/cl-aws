@@ -1,5 +1,5 @@
 ;;;; package.lisp
 
 (defpackage #:cl-aws
-  (:use #:cl))
-
+  (:use #:cl :aws-sign4 :drakma)
+  (:export))
