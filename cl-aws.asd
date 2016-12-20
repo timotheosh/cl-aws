@@ -10,5 +10,6 @@
                #:aws-sign4)
   :serial t
   :components ((:file "package")
+               (:file "credentials")
+               (:file "aws-sts")
                (:file "cl-aws")))
-
