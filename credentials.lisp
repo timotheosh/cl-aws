@@ -1,19 +1,5 @@
 (in-package #:cl-aws)
 
-(defun my-getenv (name &optional default)
-  #+CMU
-  (let ((x (assoc name ext:*environment-list*
-                  :test #'string=)))
-    (if x (cdr x) default))
-  #-CMU
-  (or
-   #+Allegro (sys:getenv name)
-   #+CLISP (ext:getenv name)
-   #+ECL (si:getenv name)
-   #+SBCL (sb-unix::posix-getenv name)
-   #+LISPWORKS (lispworks:environment-variable name)
-   default))
-
 (defun aws-config (profile &optional confile)
   "If confile is not provided, we try to find the aws config file from the
    AWS_CONFIG_FILE environment variable.
@@ -22,11 +8,11 @@
   (let ((confile-path confile)
         (config (py-configparser:make-config)))
     (when (equalp confile-path nil)
-      (if (my-getenv "AWS_CONFIG_FILE")
-          (setq confile-path (my-getenv "AWS_CONFIG_FILE"))
-          (setq confile-path (format nil "~A/~A" (my-getenv "HOME") ".aws/config"))))
+      (if (uiop:getenv "AWS_CONFIG_FILE")
+          (setq confile-path (uiop:getenv "AWS_CONFIG_FILE"))
+          (setq confile-path (format nil "~A/~A" (uiop:getenv "HOME") ".aws/credentials"))))
     (py-configparser:read-files config (list confile-path))
-    (py-configparser:items config (format nil "profile ~A" profile))))
+    (py-configparser:items config profile)))
 
 (defun get-aws-credentials (profile &optional confile)
   "Just returns the needed creds for the aws signature"
